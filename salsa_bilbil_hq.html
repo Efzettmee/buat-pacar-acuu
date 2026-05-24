@@ -1,0 +1,303 @@
+
+<style>
+  @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+  @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+  @keyframes fadein{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes heartbeat{0%,100%{transform:scale(1)}14%{transform:scale(1.3)}28%{transform:scale(1)}42%{transform:scale(1.3)}70%{transform:scale(1)}}
+  @keyframes wiggle{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(3deg)}}
+  @keyframes glow{0%,100%{box-shadow:0 0 8px #ff6b9d}50%{box-shadow:0 0 22px #ff6b9d,0 0 44px #ffaacf}}
+  @keyframes shimmer{0%{background-position:200% center}100%{background-position:-200% center}}
+  @keyframes bilbil{0%,100%{transform:rotate(-8deg) scale(1)}50%{transform:rotate(8deg) scale(1.15)}}
+
+  *{box-sizing:border-box;margin:0;padding:0;}
+
+  .wrapper{
+    background:linear-gradient(135deg,#fff0f5,#ffe4ef,#ffd6e7);
+    border-radius:var(--border-radius-lg);
+    padding:24px 20px;
+    min-height:660px;
+    position:relative;
+    overflow:hidden;
+    font-family:var(--font-sans);
+  }
+
+  .floating-emoji{position:absolute;font-size:20px;animation:float 3s ease-in-out infinite;pointer-events:none;opacity:0.55;}
+
+  .name-banner{text-align:center;margin-bottom:4px;animation:fadein 0.6s ease;}
+
+  .name-salsa{
+    font-size:30px;font-weight:500;
+    background:linear-gradient(90deg,#ff6b9d,#c0185a,#ff6b9d,#c0185a);
+    background-size:200% auto;
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+    animation:shimmer 3s linear infinite;
+    letter-spacing:2px;
+  }
+
+  .bilbil-tag{
+    display:inline-block;
+    font-size:13px;font-weight:500;color:#e06090;
+    background:#fff0f5;border:1px dashed #ff6b9d;
+    border-radius:99px;padding:3px 14px;margin:4px auto;
+    animation:bilbil 1.5s ease-in-out infinite;
+  }
+
+  .hq-badge{
+    display:inline-block;
+    background:#fff0f5;border:1px solid #ff6b9d;
+    border-radius:99px;padding:3px 14px;
+    font-size:11px;font-weight:500;color:#c0185a;
+    margin:4px auto 10px;letter-spacing:0.3px;
+  }
+
+  .kepanjangan{
+    background:white;border:0.5px solid #f5b8ce;
+    border-radius:var(--border-radius-md);
+    padding:10px 14px;margin-bottom:12px;
+    text-align:center;animation:fadein 0.9s ease;
+  }
+
+  .kep-title{font-size:10px;color:#e06090;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;font-weight:500;}
+
+  .kep-row{display:flex;align-items:baseline;justify-content:center;gap:4px;margin:2px 0;}
+  .kep-letter{font-size:16px;font-weight:500;color:#c0185a;min-width:16px;}
+  .kep-word{font-size:12px;color:#e06090;}
+
+  .letter-boxes{display:flex;justify-content:center;gap:6px;margin:8px 0 14px;}
+  .lbox{
+    width:44px;height:44px;background:white;
+    border:1.5px solid #ff6b9d;border-radius:var(--border-radius-md);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    animation:fadein 0.8s ease;
+  }
+  .lbox .letter{font-size:18px;font-weight:500;color:#c0185a;line-height:1;}
+  .lbox .lmeaning{font-size:8px;color:#e06090;text-align:center;line-height:1.2;margin-top:2px;}
+
+  .big-face{font-size:60px;text-align:center;margin:8px 0;animation:bounce 1.5s ease-in-out infinite;display:block;}
+
+  .status-bar{background:white;border:0.5px solid #f5b8ce;border-radius:var(--border-radius-lg);padding:12px 16px;margin-bottom:10px;animation:fadein 1s ease;}
+  .status-label{font-size:11px;color:#e06090;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;font-weight:500;}
+  .progress-bar{height:10px;background:#ffd6e7;border-radius:99px;overflow:hidden;margin-bottom:4px;}
+  .progress-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,#ff6b9d,#c0185a);transition:width 1s ease;}
+  .progress-label{font-size:11px;color:#c0185a;font-weight:500;}
+
+  .day-counter{display:flex;justify-content:center;gap:7px;margin:6px 0 10px;}
+  .day-dot{width:34px;height:34px;border-radius:50%;border:1.5px solid #f5b8ce;background:white;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:500;color:#e06090;transition:all 0.3s;}
+  .day-dot.active{background:#ff6b9d;border-color:#c0185a;color:white;animation:pulse 1s ease-in-out infinite;}
+  .day-dot.done{background:#ffd6e7;color:#c0185a;}
+
+  .mood-meter{display:flex;gap:6px;justify-content:center;margin:8px 0;}
+  .mood-btn{font-size:22px;background:none;border:1.5px solid transparent;border-radius:50%;width:42px;height:42px;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center;}
+  .mood-btn:hover{transform:scale(1.2);border-color:#f5b8ce;background:#fff0f5;}
+  .mood-btn.selected{border-color:#ff6b9d;background:#fff0f5;transform:scale(1.15);animation:wiggle 0.5s ease-in-out infinite;}
+
+  .cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;}
+  .card{background:white;border:0.5px solid #f5b8ce;border-radius:var(--border-radius-md);padding:12px;text-align:center;animation:fadein 1.2s ease;}
+  .card-emoji{font-size:26px;display:block;margin-bottom:4px;}
+  .card-title{font-size:12px;font-weight:500;color:#c0185a;margin-bottom:2px;}
+  .card-desc{font-size:11px;color:#e06090;}
+
+  .alert-box{background:#fff0f5;border:1.5px solid #ff6b9d;border-radius:var(--border-radius-md);padding:12px 16px;margin-bottom:10px;animation:glow 2s ease-in-out infinite,fadein 1.4s ease;text-align:center;}
+  .alert-title{font-size:14px;font-weight:500;color:#c0185a;margin-bottom:4px;}
+  .alert-desc{font-size:12px;color:#e06090;line-height:1.5;}
+
+  .buttons{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;}
+  .btn{padding:10px 8px;border-radius:var(--border-radius-md);border:0.5px solid #f5b8ce;background:white;font-size:12px;font-weight:500;color:#c0185a;cursor:pointer;transition:all 0.2s;text-align:center;font-family:var(--font-sans);}
+  .btn:hover{background:#fff0f5;transform:scale(1.03);}
+  .btn:active{transform:scale(0.97);}
+  .btn-full{grid-column:span 2;background:linear-gradient(135deg,#ff6b9d,#c0185a);color:white;border:none;font-size:14px;padding:13px;animation:heartbeat 2s ease-in-out infinite;}
+  .btn-full:hover{background:linear-gradient(135deg,#ff4d8d,#a0144a);color:white;}
+
+  .message-box{background:white;border:0.5px solid #f5b8ce;border-radius:var(--border-radius-lg);padding:14px 16px;font-size:13px;color:#c0185a;line-height:1.6;min-height:52px;animation:fadein 0.5s ease;display:none;}
+  .message-box.show{display:block;}
+
+  .bilbil-footer{text-align:center;margin-top:10px;font-size:11px;color:#e06090;animation:fadein 2s ease;}
+</style>
+
+<div class="wrapper">
+  <span class="floating-emoji" style="top:5%;left:4%;animation-delay:0s">🌸</span>
+  <span class="floating-emoji" style="top:10%;right:6%;animation-delay:0.5s">💗</span>
+  <span class="floating-emoji" style="top:40%;left:2%;animation-delay:1s">🫖</span>
+  <span class="floating-emoji" style="top:60%;right:3%;animation-delay:1.5s">🍫</span>
+  <span class="floating-emoji" style="top:80%;left:7%;animation-delay:2s">🌹</span>
+  <span class="floating-emoji" style="top:88%;right:8%;animation-delay:2.5s">✨</span>
+
+  <!-- NAMA SALSA -->
+  <div class="name-banner">
+    <div class="name-salsa">✦ SALSA ✦</div>
+  </div>
+  <div style="text-align:center;margin-bottom:2px;">
+    <span class="bilbil-tag">💕 Sayangku Bilbil 💕</span>
+  </div>
+  <div style="text-align:center">
+    <span class="hq-badge">🩸 S.A.L.S.A H.Q — Sayang Aku Lagi Sakit Ayank, Hug me Quick! 🩸</span>
+  </div>
+
+  <!-- KEPANJANGAN SALSA -->
+  <div class="kepanjangan">
+    <div class="kep-title">✦ Arti nama Salsa versi Bilbil ✦</div>
+    <div class="kep-row"><span class="kep-letter">S</span><span class="kep-word">= Sayang Bilbil banget</span></div>
+    <div class="kep-row"><span class="kep-letter">A</span><span class="kep-word">= Aku lagi halangan nih</span></div>
+    <div class="kep-row"><span class="kep-letter">L</span><span class="kep-word">= Lumayan sakit perut</span></div>
+    <div class="kep-row"><span class="kep-letter">S</span><span class="kep-word">= Sini peluk aku dong</span></div>
+    <div class="kep-row"><span class="kep-letter">A</span><span class="kep-word">= Ayank Bilbil forever 💗</span></div>
+  </div>
+
+  <!-- S-A-L-S-A BOXES -->
+  <div class="letter-boxes">
+    <div class="lbox"><span class="letter">S</span><span class="lmeaning">Super<br>Kuat</span></div>
+    <div class="lbox"><span class="letter">A</span><span class="lmeaning">Anggun<br>Banget</span></div>
+    <div class="lbox"><span class="letter">L</span><span class="lmeaning">Luar<br>Biasa</span></div>
+    <div class="lbox"><span class="letter">S</span><span class="lmeaning">Sabar<br>Sekali</span></div>
+    <div class="lbox"><span class="letter">A</span><span class="lmeaning">Amore<br>Bilbil 💗</span></div>
+  </div>
+
+  <span class="big-face" id="mainFace">😭</span>
+
+  <div class="status-bar">
+    <div class="status-label">⚡ Level Penderitaan Salsa — Hari 2</div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="sufferBar" style="width:75%"></div>
+    </div>
+    <div class="progress-label" id="sufferLabel">75% — Salsa lagi ngambek + nunggu Bilbil dateng bawa coklat 😂</div>
+  </div>
+
+  <div class="day-counter">
+    <div class="day-dot done">H1</div>
+    <div class="day-dot active">H2</div>
+    <div class="day-dot">H3</div>
+    <div class="day-dot">H4</div>
+    <div class="day-dot">H5</div>
+    <div class="day-dot">H6</div>
+    <div class="day-dot">H7</div>
+  </div>
+
+  <div class="status-bar">
+    <div class="status-label">📊 Mood Salsa sekarang?</div>
+    <div class="mood-meter">
+      <button class="mood-btn" onclick="setMood(this,'😠','Salsa marah, Bilbil siap-siap diem aja dulu ya 😂')">😠</button>
+      <button class="mood-btn" onclick="setMood(this,'😭','Salsa nangis — Bilbil langsung terbang!')">😭</button>
+      <button class="mood-btn" onclick="setMood(this,'😤','Salsa kesal — Bilbil mode manggut-manggut ON')">😤</button>
+      <button class="mood-btn" onclick="setMood(this,'🥺','Salsa minta pelukan Bilbil please')">🥺</button>
+      <button class="mood-btn" onclick="setMood(this,'😴','Salsa ngantuk — Bilbil temenin bobok!')">😴</button>
+    </div>
+  </div>
+
+  <div class="cards">
+    <div class="card">
+      <span class="card-emoji">🤰</span>
+      <div class="card-title">Perut Salsa</div>
+      <div class="card-desc">Lagi drama internal</div>
+    </div>
+    <div class="card">
+      <span class="card-emoji">🍫</span>
+      <div class="card-title">Tugas Bilbil</div>
+      <div class="card-desc">Bawa coklat sekarang!</div>
+    </div>
+    <div class="card">
+      <span class="card-emoji">🛋️</span>
+      <div class="card-title">Salsa rebahan</div>
+      <div class="card-desc">Mode: aktif penuh</div>
+    </div>
+    <div class="card">
+      <span class="card-emoji">🤗</span>
+      <div class="card-title">Bilbil mana?</div>
+      <div class="card-desc">Salsa butuh pelukan!</div>
+    </div>
+  </div>
+
+  <div class="alert-box">
+    <div class="alert-title">💌 Pesan Salsa buat Bilbil</div>
+    <div class="alert-desc" id="loveMsg">Bilbil... Salsa lagi sakit. Ke sini dong temenin rebahan 🥺</div>
+  </div>
+
+  <div class="buttons">
+    <button class="btn" onclick="doAction('warmth')">🌡️ Minta Kompres Bilbil</button>
+    <button class="btn" onclick="doAction('choco')">🍫 Tagih Coklat Bilbil</button>
+    <button class="btn" onclick="doAction('hug')">🤗 Minta Pelukan Bilbil</button>
+    <button class="btn" onclick="doAction('movie')">🎬 Nonton sama Bilbil</button>
+    <button class="btn btn-full" onclick="doAction('love')">❤️ Bilbil, semangatin Salsa dong!</button>
+  </div>
+
+  <div class="message-box" id="msgBox"></div>
+
+  <div class="bilbil-footer">made with 💗 by Bilbil — khusus buat Salsa tersayang</div>
+</div>
+
+<script>
+  const msgs={
+    warmth:[
+      "Oke Salsa, Bilbil lagi nyiapin kompres hangat terhangat sedunia khusus buat kamu! 🌡️❤️",
+      "Salsa tenang! Bilbil udah di jalan bawa botol hangat + selimut! 🔥💗",
+      "Bilbil mau mijit pelan-pelan buat Salsa, mau? 🙈💗"
+    ],
+    choco:[
+      "Bilbil udah order coklat! Dark chocolate atau milk chocolate buat Salsa? Atau dua-duanya? 🍫🍫",
+      "Ilmu pengetahuan Bilbil sudah membuktikan: coklat = obat halangan nomor satu buat Salsa! 🔬🍫",
+      "Coklat + es krim sudah di-order Bilbil, bonus karena Salsa kuat banget! 🍦💗"
+    ],
+    hug:[
+      "Pelukan Bilbil khusus buat Salsa: (っ◔◡◔)っ ♥ — unlimited, kapanpun! 🤗",
+      "Pelukan virtual Bilbil sedang dikirim lewat WiFi langsung ke hati Salsa... 📡❤️",
+      "Nanti kalau ketemu, pelukan Bilbil benerannya dua kali lipat ya Salsa! 🥺💗"
+    ],
+    movie:[
+      "Bilbil rekomendasiin: film romance bikin nangis tapi happy ending buat Salsa 🎬💕",
+      "Atau drama Korea 16 episode buat Salsa? Biar lama rebahnya! 😂 — Bilbil temenin!",
+      "Bilbil mau nonton virtual bareng Salsa! Sync dari jauh bisa! 🍿❤️"
+    ],
+    love:[
+      "SALSA, KAMU HEBAT BANGET! 💪 Bilbil bangga! Hari ke-2 ini bakal lewat! ❤️‍🔥",
+      "Salsa terkuat yang pernah Bilbil kenal! Kamu luar biasa banget! 🌸👑",
+      "Bilbil sayang Salsa banget! Makin sayang pas Salsa lagi susah gini! 💗✨",
+      "Ayo Salsa! Bilbil selalu ada di sini! So proud of you sayang! 🎉❤️",
+      "Salsa = Sayang Aku Lagi Sakit Ayank — Bilbil Hug me Quick! 😂💗"
+    ]
+  };
+
+  const faces={warmth:'😌',choco:'🤤',hug:'🥺',movie:'🤩',love:'😍'};
+
+  function doAction(type){
+    const list=msgs[type];
+    const msg=list[Math.floor(Math.random()*list.length)];
+    const box=document.getElementById('msgBox');
+    box.textContent=msg;
+    box.classList.add('show');
+    document.getElementById('mainFace').textContent=faces[type]||'😍';
+    if(type==='love'){
+      const bar=document.getElementById('sufferBar');
+      const label=document.getElementById('sufferLabel');
+      const cur=parseInt(bar.style.width);
+      const next=Math.max(5,cur-15);
+      bar.style.width=next+'%';
+      label.textContent=next+'% — Salsa makin semangat gara-gara Bilbil! 💪';
+    }
+    setTimeout(()=>{document.getElementById('mainFace').textContent='😊';},3000);
+  }
+
+  const loveMsgs=[
+    "Bilbil... Salsa lagi sakit. Ke sini dong temenin rebahan 🥺",
+    "Salsa mau coklat Bilbil! Cepet bawain! ❤️",
+    "Bilbil jangan kemana-mana ya, Salsa butuh kamu! 🫖",
+    "Hari 2 paling berat, tapi ada Bilbil jadi kuat! 💪",
+    "Besok Salsa pasti lebih enakan! Makasih ya Bilbil 🌸",
+    "Salsa sayang Bilbil, walaupun lagi sakit! 💗",
+    "Salsa = Sayang Aku Lagi Sakit Ayank — Hug me Quick Bilbil! 😂"
+  ];
+
+  let msgIdx=0;
+  setInterval(()=>{
+    msgIdx=(msgIdx+1)%loveMsgs.length;
+    document.getElementById('loveMsg').textContent=loveMsgs[msgIdx];
+  },4000);
+
+  function setMood(el,face,desc){
+    document.querySelectorAll('.mood-btn').forEach(b=>b.classList.remove('selected'));
+    el.classList.add('selected');
+    document.getElementById('mainFace').textContent=face;
+    const box=document.getElementById('msgBox');
+    box.textContent='📊 '+desc+' 💗';
+    box.classList.add('show');
+  }
+</script>
